@@ -83,7 +83,7 @@
                         var alpha = data[((imageWidth * y) + x) * 4 + 3];
                     }
                 }
-                
+                imageData.data = data
                 context.putImageData(imageData, 0, 0)
             };
             imageObj.src = './demo.jpg';
