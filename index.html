@@ -44,7 +44,7 @@
                 context.drawImage(this, 0, 0);
                 var imageData = context.getImageData(0, 0, this.width, this.height);
                 console.log(imageData)
-                //context.putImageData(grayscale(imageData), 0, 0)
+                context.putImageData(grayscale(imageData), 0, 0)
             }, false);
 
             // var image = new Image();
