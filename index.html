@@ -92,7 +92,7 @@
 
         // Apply brightness filter.
         brightness = function(pixels) {
-          var brightAdj = 80
+          var brightAdj = 100
           var d = pixels.data;
           for (var i = 0; i < d.length; i += 4) {
             d[i] += brightAdj;
