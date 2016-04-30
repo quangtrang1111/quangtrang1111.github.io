@@ -1,78 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>1212428 - Huỳnh Quang Trang</title>
-
     <meta name="description" content="Filter video using canvas HTML5">
     <meta name="author" content="Quang Trang">
-</head>
-
-<body>
+  </head>
+  <body>
     <h1>Bài tập tuần 8 - Môn đồ họa ứng dụng<h1>
     <h2>Sinh viên thực hiện: 1212428 - Huỳnh Quang Trang</h2>
     <h3>Source code: <a href="https://github.com/quangtrang1111/quangtrang1111.github.io.git">https://github.com/quangtrang1111/quangtrang1111.github.io.git</a></h3>
     <h3>Nguồn video: <a href="http://mp3.zing.vn/video-clip/Sau-Tat-Ca-ERIK-ST-319/ZW7O777O.html">http://mp3.zing.vn/video-clip/Sau-Tat-Ca-ERIK-ST-319/ZW7O777O.html</a></h3>
     <h3>Hiệu ứng filter: grayscale</h3>
     <div>
-        <video id="video" controls autoplay>
-          <source src="./demo.mp4" type="video/mp4" />
-        </video>
+      <video id="video" controls autoplay>
+        <source src="./demo.mp4" type="video/mp4" />
+      </video>
     </div>
     <div>
-        <canvas id="canvas">
-            Your browser does not support the HTML5 canvas tag.
-        </canvas>
+      <canvas id="canvas">
+        Your browser does not support the HTML5 canvas tag.
+      </canvas>
     </div>
-
     <script type="text/javascript">
-        window.onload = function() {
-            this.video = document.getElementById("video");
-            this.canvas = document.getElementById('canvas');
-            this.context = canvas.getContext('2d');
-            var self = this;
+      window.onload = function() {
+        this.video = document.getElementById("video");
+        this.canvas = document.getElementById('canvas');
+        this.context = canvas.getContext('2d');
+        var self = this;
 
-            this.video.addEventListener("play", function() {
-                // Set width/width follow the input video
-                self.width = self.canvas.width = self.video.videoWidth;
-                self.height = self.canvas.height = self.video.videoHeight;
-                self.timerCallback();
-            }, false)
+        this.video.addEventListener("play", function() {
+          // Set width/width follow the input video
+          self.width = self.canvas.width = self.video.videoWidth;
+          self.height = self.canvas.height = self.video.videoHeight;
+          self.timerCallback();
+        }, false)
 
-            timerCallback = function() {
-                if (this.video.paused || this.video.ended) {
-                    return;
-                }
+        timerCallback = function() {
+          if (this.video.paused || this.video.ended) {
+            return;
+          }
 
-                this.context.drawImage(this.video, 0, 0, this.width, this.height);
-                let frame = this.context.getImageData(0, 0, this.width, this.height);
-                this.context.putImageData(this.grayscale(frame), 0, 0);
-                
-                // Loop to next frame
-                let self = this;
-                setTimeout(function() {
-                    self.timerCallback();
-                }, 0);
-            }
+          this.context.drawImage(this.video, 0, 0, this.width, this.height);
+          let frame = this.context.getImageData(0, 0, this.width, this.height);
+          this.context.putImageData(this.grayscale(frame), 0, 0);
 
-            // Apply grayscale filter.
-            grayscale = function(pixels) {
-                let d = pixels.data;
-                for (let i = 0; i < d.length; i += 4) {
-                    let r = d[i];
-                    let g = d[i + 1];
-                    let b = d[i + 2];
-                    let v = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
-                    d[i] = d[i + 1] = d[i + 2] = v;
-                }
-                return pixels;
-            }
+          // Loop to next frame
+          let self = this;
+          setTimeout(function() {
+            self.timerCallback();
+          }, 0);
         }
-    </script>
-</body>
 
+        // Apply grayscale filter.
+        grayscale = function(pixels) {
+          let d = pixels.data;
+          for (let i = 0; i < d.length; i += 4) {
+            let r = d[i];
+            let g = d[i + 1];
+            let b = d[i + 2];
+            let v = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+            d[i] = d[i + 1] = d[i + 2] = v;
+          }
+          return pixels;
+        }
+
+        // Apply brightness filter.
+        brightness = function(pixels) {
+          var brightAdj = 40
+          var d = pixels.data;
+          for (var i = 0; i < d.length; i += 4) {
+            d[i] += brightAdj;
+            d[i + 1] += brightAdj;
+            d[i + 2] += brightAdj;
+          }
+          return pixels;
+        }
+
+        // Apply threshold filter.
+        threshold = function(pixels) {
+          var thresholdVal = 128
+          var d = pixels.data;
+          for (var i = 0; i < d.length; i += 4) {
+            var r = d[i];
+            var g = d[i + 1];
+            var b = d[i + 2];
+            var v = (0.2126 * r + 0.7152 * g + 0.0722 * b >= thresholdVal) ? 255 : 0;
+            d[i] = d[i + 1] = d[i + 2] = v;
+          }
+          return pixels;
+        }
+      }    
+    </script>
+  </body>
 </html>
