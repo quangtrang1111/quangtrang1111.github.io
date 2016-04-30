@@ -92,7 +92,7 @@
 
         // Apply brightness filter.
         brightness = function(pixels) {
-          var brightAdj = 40
+          var brightAdj = 80
           var d = pixels.data;
           for (var i = 0; i < d.length; i += 4) {
             d[i] += brightAdj;
@@ -104,7 +104,7 @@
 
         // Apply threshold filter.
         threshold = function(pixels) {
-          var thresholdVal = 128
+          var thresholdVal = 56
           var d = pixels.data;
           for (var i = 0; i < d.length; i += 4) {
             var r = d[i];
