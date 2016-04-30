@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,9 +10,84 @@
 
     <meta name="description" content="Filter video using canvas HTML5">
     <meta name="author" content="Quang Trang">
+</head>
 
-  </head>
-  <body>
-    Hello
-  </body>
+<body>
+    <img id="scream" width="600" height="350" alt="The Scream" src="./demo.jpg">
+
+    <canvas id="myCanvas" width="600" height="350" style="border:1px solid #d3d3d3;">
+      Your browser does not support the HTML5 canvas tag.
+      </canvas>
+
+    <script type="text/javascript">
+        // Get image pixels from image element.
+        // getPixels = function(img) {
+        //     var canvas = new CanvasElement(width: img.width, height: img.height);
+        //     var context = canvas.getContext('2d');
+        //     context.drawImage(img, 0, 0);
+        //     return context.getImageData(0, 0, canvas.width, canvas.height);
+        // }
+
+        // Apply grayscale filter.
+        grayscale = function(pixels) {
+            var d = pixels.data;
+            for (var i = 0; i < d.length; i += 4) {
+                var r = d[i];
+                var g = d[i + 1];
+                var b = d[i + 2];
+                // CIE luminance for the RGB
+                var v = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+                d[i] = d[i + 1] = d[i + 2] = v;
+            }
+            return pixels;
+        }
+
+        window.onload = function() {
+            var imageObj = new Image();
+            imageObj.crossOrigin = "Anonymous";
+            imageObj.onload = function() {
+                
+            var canvas = document.getElementById('myCanvas');
+            var context = canvas.getContext('2d');
+            var imageWidth = this.width;
+            var imageHeight = this.height;
+
+            context.drawImage(this, 0, 0);
+
+            var imageData = context.getImageData(0, 0, imageWidth, imageHeight);
+            var data = imageData.data;
+
+            // iterate over all pixels
+            for (var i = 0, n = data.length; i < n; i += 4) {
+                var red = data[i];
+                var green = data[i + 1];
+                var blue = data[i + 2];
+                var alpha = data[i + 3];
+            }
+
+            // pick out pixel data from x, y coordinate
+            var x = 20;
+            var y = 20;
+            var red = data[((imageWidth * y) + x) * 4];
+            var green = data[((imageWidth * y) + x) * 4 + 1];
+            var blue = data[((imageWidth * y) + x) * 4 + 2];
+            var alpha = data[((imageWidth * y) + x) * 4 + 3];
+
+            // iterate over all pixels based on x and y coordinates
+            for (var y = 0; y < imageHeight; y++) {
+                // loop through each column
+                for (var x = 0; x < imageWidth; x++) {
+                    var red = data[((imageWidth * y) + x) * 4];
+                    var green = data[((imageWidth * y) + x) * 4 + 1];
+                    var blue = data[((imageWidth * y) + x) * 4 + 2];
+                    var alpha = data[((imageWidth * y) + x) * 4 + 3];
+                }
+            }
+            };
+            imageObj.src = './demo.jpg';
+
+        }
+    </script>
+</body>
+
 </html>
