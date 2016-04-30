@@ -25,19 +25,6 @@
     </div>
 
     <script type="text/javascript">
-        // Apply grayscale filter.
-        grayscale = function(pixels) {
-            let d = pixels.data;
-            for (let i = 0; i < d.length; i += 4) {
-                let r = d[i];
-                let g = d[i + 1];
-                let b = d[i + 2];
-                let v = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
-                d[i] = d[i + 1] = d[i + 2] = v;
-            }
-            return pixels;
-        }
-
         window.onload = function() {
             this.video = document.getElementById("video");
             this.canvas = document.getElementById('canvas');
@@ -48,46 +35,36 @@
                 self.width = self.video.videoWidth;
                 self.height = self.video.videoHeight;
                 self.timerCallback();
-            }, false);
+            }, false)
 
             timerCallback = function() {
                 if (this.video.paused || this.video.ended) {
                     return;
                 }
 
-                this.computeFrame();
+                this.context.drawImage(this.video, 0, 0, this.width, this.height);
+                let frame = this.context.getImageData(0, 0, this.width, this.height);
+                this.context.putImageData(this.grayscale(frame), 0, 0);
+                
+                // Loop to next frame
                 let self = this;
                 setTimeout(function() {
                     self.timerCallback();
                 }, 0);
-            };
+            }
 
-            computeFrame = function() {
-                this.context.drawImage(this.video, 0, 0, this.width, this.height);
-                let frame = this.context.getImageData(0, 0, this.width, this.height);
-                let l = frame.data.length / 4;
-
-                for (let i = 0; i < l; i++) {
-                    let r = frame.data[i * 4 + 0];
-                    let g = frame.data[i * 4 + 1];
-                    let b = frame.data[i * 4 + 2];
-                    if (g > 100 && r > 100 && b < 43)
-                        frame.data[i * 4 + 3] = 0;
+            // Apply grayscale filter.
+            grayscale = function(pixels) {
+                let d = pixels.data;
+                for (let i = 0; i < d.length; i += 4) {
+                    let r = d[i];
+                    let g = d[i + 1];
+                    let b = d[i + 2];
+                    let v = (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
+                    d[i] = d[i + 1] = d[i + 2] = v;
                 }
-                this.context.putImageData(grayscale(frame), 0, 0);
-                return;
-            };
-            // var image = new Image();
-            // image.onload = function() {
-            //     var canvas = document.getElementById('canvas');
-            //     var context = canvas.getContext('2d');
-
-            //     context.drawImage(this, 0, 0);
-            //     var imageData = context.getImageData(0, 0, this.width, this.height);
-            //     context.putImageData(grayscale(imageData), 0, 0)
-            // };
-            // image.src = './demo.jpg';
-
+                return pixels;
+            }
         }
     </script>
 </body>
