@@ -13,23 +13,14 @@
 </head>
 
 <body>
-    <div>
-      <img id="scream" width="600" height="350" alt="The Scream" src="./demo.jpg">
-    </div>
-
-    <canvas id="myCanvas" width="600" height="350" style="border:1px solid #d3d3d3;">
+    <video id="video" controls>
+        <source src="http://channelz2.mp3.zdn.vn/zv/0814219eafffb5f840618562594da7c0/57240390/2016/01/22/f/8/f8a1191b9a99829068c5c5dbb8b4a4d2.mp4?filename=Sau%20Tat%20Ca%20-%20ERIK%20ST%20319.mp4" type="video/mp4" />
+    </video>
+    <canvas id="canvas" width="640" height="338" style="border:1px solid #d3d3d3;">
       Your browser does not support the HTML5 canvas tag.
       </canvas>
 
     <script type="text/javascript">
-        // Get image pixels from image element.
-        // getPixels = function(img) {
-        //     var canvas = new CanvasElement(width: img.width, height: img.height);
-        //     var context = canvas.getContext('2d');
-        //     context.drawImage(img, 0, 0);
-        //     return context.getImageData(0, 0, canvas.width, canvas.height);
-        // }
-
         // Apply grayscale filter.
         grayscale = function(pixels) {
             var d = pixels.data;
@@ -45,17 +36,27 @@
         }
 
         window.onload = function() {
-            var imageObj = new Image();
+            var video = document.getElementById("video");
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
 
-            imageObj.onload = function() {
-                var canvas = document.getElementById('myCanvas');
-                var context = canvas.getContext('2d');
-
-                context.drawImage(this, 0, 0);
+            video.addEventListener("play", function() {
+                //context.drawImage(this, 0, 0);
                 var imageData = context.getImageData(0, 0, this.width, this.height);
-                context.putImageData(grayscale(imageData), 0, 0)
-            };
-            imageObj.src = './demo.jpg';
+                console.log(imageData)
+                //context.putImageData(grayscale(imageData), 0, 0)
+            }, false);
+
+            // var image = new Image();
+            // image.onload = function() {
+            //     var canvas = document.getElementById('canvas');
+            //     var context = canvas.getContext('2d');
+
+            //     context.drawImage(this, 0, 0);
+            //     var imageData = context.getImageData(0, 0, this.width, this.height);
+            //     context.putImageData(grayscale(imageData), 0, 0)
+            // };
+            // image.src = './demo.jpg';
 
         }
     </script>
