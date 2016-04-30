@@ -13,7 +13,9 @@
 </head>
 
 <body>
-    <img id="scream" width="600" height="350" alt="The Scream" src="./demo.jpg">
+    <div>
+      <img id="scream" width="600" height="350" alt="The Scream" src="./demo.jpg">
+    </div>
 
     <canvas id="myCanvas" width="600" height="350" style="border:1px solid #d3d3d3;">
       Your browser does not support the HTML5 canvas tag.
@@ -50,7 +52,7 @@
                 var context = canvas.getContext('2d');
 
                 context.drawImage(this, 0, 0);
-                var imageData = context.getImageData(0, 0, this.width, this.height);                
+                var imageData = context.getImageData(0, 0, this.width, this.height);
                 context.putImageData(grayscale(imageData), 0, 0)
             };
             imageObj.src = './demo.jpg';
