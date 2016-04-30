@@ -14,7 +14,7 @@
 
 <body>
     <div>
-        <video id="video" controls>
+        <video id="video" controls autoplay>
           <source src="./demo.mp4" type="video/mp4" />
         </video>
     </div>
@@ -32,8 +32,9 @@
             var self = this;
 
             this.video.addEventListener("play", function() {
+                // Set width/width follow the input video
                 self.width = self.canvas.width = self.video.videoWidth;
-                self.height = self.canvas.width = self.video.videoHeight;
+                self.height = self.canvas.height = self.video.videoHeight;
                 self.timerCallback();
             }, false)
 
