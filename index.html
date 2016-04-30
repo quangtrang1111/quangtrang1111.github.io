@@ -13,7 +13,11 @@
     <h2>Sinh viên thực hiện: 1212428 - Huỳnh Quang Trang</h2>
     <h3>Source code: <a href="https://github.com/quangtrang1111/quangtrang1111.github.io.git">https://github.com/quangtrang1111/quangtrang1111.github.io.git</a></h3>
     <h3>Nguồn video: <a href="http://mp3.zing.vn/video-clip/Sau-Tat-Ca-ERIK-ST-319/ZW7O777O.html">http://mp3.zing.vn/video-clip/Sau-Tat-Ca-ERIK-ST-319/ZW7O777O.html</a></h3>
-    <h3>Hiệu ứng filter: grayscale</h3>
+    <h3 id="type">Hiệu ứng filter:
+      <button id="grayscale">Grayscale</button>
+      <button id="brightness">Brightness</button>
+      <button id="threshold">Threshold</button>
+    </h3>
     <div>
       <video id="video" controls autoplay>
         <source src="./demo.mp4" type="video/mp4" />
@@ -28,11 +32,18 @@
       window.onload = function() {
         this.video = document.getElementById("video");
         this.canvas = document.getElementById('canvas');
+        this.typeButtons = document.getElementById("type");
         this.context = canvas.getContext('2d');
+        
+        this.type = 'grayscale';
         var self = this;
-
+        
+        this.typeButtons.addEventListener("click", function(event) {
+          self.type = event.target.id;
+        }, false)
+        
         this.video.addEventListener("play", function() {
-          // Set width/width follow the input video
+          // Set width/height follow the input video
           self.width = self.canvas.width = self.video.videoWidth;
           self.height = self.canvas.height = self.video.videoHeight;
           self.timerCallback();
@@ -45,7 +56,19 @@
 
           this.context.drawImage(this.video, 0, 0, this.width, this.height);
           let frame = this.context.getImageData(0, 0, this.width, this.height);
-          this.context.putImageData(this.grayscale(frame), 0, 0);
+          
+          switch (this.type) {
+            case 'grayscale':
+              this.context.putImageData(this.grayscale(frame), 0, 0);
+              break;
+            case 'brightness':
+              this.context.putImageData(this.brightness(frame), 0, 0);
+              break;
+            case 'threshold':
+              this.context.putImageData(this.threshold(frame), 0, 0);
+              break;              
+          }
+          
 
           // Loop to next frame
           let self = this;
